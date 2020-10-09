@@ -7,7 +7,10 @@ export default function Main(){
     return (
         <Router>      
             <Route path="/login/" exact component={Login} />
-            <Route path="/index/" exact component={AdminIndex} />
+            <Route path="/index/"  component={AdminIndex} />
+            {/* <Route path="/index/add/" exact   component={AdminIndex} />
+            <Route path="/index/add/:id"  exact   component={AdminIndex} />
+            <Route path="/index/list/"   component={AdminIndex} /> */}
         </Router>
     )
 }
