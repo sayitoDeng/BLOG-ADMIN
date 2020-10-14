@@ -28,7 +28,7 @@ export default function AddArticle(props) {
             method:'get',
             url:servicePath.getTypeInfo,
             header:{ 'Access-Control-Allow-Origin':'*' },
-            withCredentials: true
+            withCredentials: false
         }).then(
         res=>{
             if(res.data.data==="没有登录"){
@@ -55,7 +55,7 @@ export default function AddArticle(props) {
             withCredentials: true,
             header:{ 'Access-Control-Allow-Origin':'*' }
         }).then(
-            res=>{console.log(res)
+            res=>{
                 //let articleInfo= res.data.data[0]
                 setArticleTitle(res.data.data[0].title)
                 setMarkdown(res.data.data[0].article_content)

@@ -29,6 +29,7 @@ export default function Login(props) {
         axios({
             method:'post',
             url:servicePath.checkLogin,
+            header:{ 'Access-Control-Allow-Origin':'*' },
             data:dataProps,
             withCredentials: true
         }).then(

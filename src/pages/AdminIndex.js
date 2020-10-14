@@ -2,10 +2,11 @@ import React,{useState,useEffect} from 'react';
 import {Link} from 'react-router-dom';
 import { Layout, Menu, Breadcrumb } from 'antd';
 import '../static/css/AdminIndex.css';
-import { PieChartOutlined,DesktopOutlined,UserOutlined,SnippetsOutlined } from '@ant-design/icons';
 import { Route } from "react-router-dom";
 import AddArticle from './AddArticle';
 import ArticleList from './ArticleList';
+import menuList from "../config/menuConfig";
+import BreadCrumb from "../components/BreadCrumb";
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -13,72 +14,54 @@ const { SubMenu } = Menu;
 export default function AdminIndex(props) {
 
     const [collapsed,setCollapsed] = useState(false);
+    const [menuItem,setMenuItem] = useState('')
 
     const onCollapse = collapsed => {
         setCollapsed(collapsed)
     };
 
-    const handleClickArticle = e=>{
-      
-      if(e.key==='addArticle'){
-        props.history.push('/index/add')
-      }else{
-        props.history.push('/index/list')
-      }
-  
-    }
+    const getMenuNodes = (menuList) => {
+      // 得到当前请求的路由路径
+      const path = props.location.pathname;
+      return menuList.reduce((pre, item) => {
 
+            pre.push(
+              <Menu.Item key={item.path}>
+                <Link to={item.path}>
+                  <span>{item.title}</span>
+                </Link>
+              </Menu.Item>
+            );
+
+  
+        return pre;
+      }, []);
+    };
+    useEffect(()=>{
+      setMenuItem(getMenuNodes(menuList))
+    },[]);
     
     return (
         <Layout style={{ minHeight: '100vh' }}>
         <Sider  collapsible collapsed={collapsed} onCollapse={onCollapse}>
           <div className="logo" />
-          <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
-            <Menu.Item key="1">
-            <PieChartOutlined />
-              <span>工作台</span>
-            </Menu.Item>
-            <Menu.Item key="2">
-            <Link to='/index'>
-              <DesktopOutlined />
-              <span>添加文章</span>
-            </Link>
-            </Menu.Item>
-            <Menu.Item key="articleList">
-            <Link to='/index/list'>
-              <DesktopOutlined />
-              <span>文章列表</span>
-            </Link>
-            </Menu.Item>
+          <Menu 
+            theme="dark" 
+            defaultSelectedKeys={['/index']} 
+            mode="inline" 
             
-            {/* <SubMenu
-              key="sub1"
-              onClick={handleClickArticle}
-              title={
-                <span>
-                  <UserOutlined />
-                  <span>文章管理</span>
-                </span>
-              }
-            >
-              <Menu.Item key="addArticle">添加文章</Menu.Item>
-              <Menu.Item key="articleList">文章列表</Menu.Item>
-
-            </SubMenu> */}
-
-            <Menu.Item key="9">
-                <SnippetsOutlined />
-              <span>留言管理</span>
-            </Menu.Item>
+          >
+            {menuItem}
           </Menu>
         </Sider>
         <Layout>
           <Header style={{ background: '#fff', padding: 0 }} />
           <Content style={{ margin: '0 16px' }}>
-            <Breadcrumb style={{ margin: '16px 0' }}>
+            {/* <Breadcrumb style={{ margin: '16px 0' }}>
               <Breadcrumb.Item>后台管理</Breadcrumb.Item>
               <Breadcrumb.Item>工作台</Breadcrumb.Item>
-            </Breadcrumb>
+            </Breadcrumb> */}
+            <BreadCrumb/>
             <div style={{ padding: 24, background: '#fff', minHeight: 'calc( 100vh - 200px )' }}>
                 <div>
                     <Route path="/index/" exact  component={AddArticle} />
